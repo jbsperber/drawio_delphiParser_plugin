@@ -1,0 +1,22 @@
+{
+	"name": "drawio-plugin-delphiparser",
+	"displayName": "Draw.io: Delphi Parser plugin",
+	"description": "Delphi Parser plugin for Draw.io",
+	"version": "0.0.0",
+	"license": "GPL-3.0",
+	"publisher": "iurifarenzena",
+	"repository": "https://github.com/iurifarenzena/drawio_delphiParser_plugin",
+	"readme": "./README.md",
+	
+	"scripts": {
+		"webpack:production": "webpack --mode production",
+		"webpack:development": "webpack --mode development",
+		"build": "npm run webpack:production",
+		"dev": "npm run webpack:development"
+	},
+	"devDependencies": {
+		"raw-loader": "^4.0.2",
+		"webpack": "^5.1.3",
+		"webpack-cli": "^4.0.0"
+	}
+}
