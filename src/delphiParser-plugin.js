@@ -1,4 +1,5 @@
 import parseDelphiUnitToUml from "./delphiParserToUml";
+import { parseCallstackToActivityDiagram }  from "./delphiParserToActivity"
 
 /**
  * Parses Pascal classes to a UML Class into draw.io's canvas
@@ -8,109 +9,13 @@ Draw.loadPlugin(function (ui) {
      * Constructs a new parse dialog.
      */
     var ParseDialog = function (editorUi) {
-        var insertPoint = editorUi.editor.graph.getFreeInsertPoint();
-
+        
         function parseAsUMLClass(text) {
-            parseDelphiUnitToUml(text,ui);
+            parseDelphiUnitToUml(text, ui);
         }
 
         function parseAsActivity(text) {
-            var lines = text.split('\n');
-
-            var vertices = new Object();
-            var cells = [];
-            var lastItem = -1;
-
-            function createVertex(id, cellvalue) {
-                var vertex = new mxCell(id, new mxGeometry(0, 0, 80, 30), 'whiteSpace=wrap;html=1;');
-                vertex.id = id;
-                vertex.value = cellvalue;
-                vertex.vertex = true;
-                vertices[id] = vertex;
-                cells.push(vertex);
-                return vertex;
-            }
-
-            function clearLineText(stackLine) {
-                if (stackLine.includes('('))
-                    stackLine = stackLine.substring(0, stackLine.indexOf('('));
-                return stackLine.trim();
-            }
-
-            for (var i = lines.length - 1; i >= 0; i--) {
-                lines[i] = clearLineText(lines[i]);
-                if (lines[i].length != 0 && lines[i].charAt(0) != ';') {
-                    var source = vertices[lastItem];
-                    var target = createVertex(i, lines[i]);
-                    if (source != null) {
-                        var edge = new mxCell('', new mxGeometry());
-                        edge.edge = true;
-                        source.insertEdge(edge, true);
-                        target.insertEdge(edge, false);
-                        cells.push(edge);
-
-                        // Recursive call. Change style
-                        if (target.value == source.value)
-                            target.style = 'whiteSpace=wrap;html=1;strokeColor=#d6b656;fillColor=#fff2cc'
-                    }
-                    lastItem = i;
-                }
-            }
-
-            if (cells.length > 0) {
-                var container = document.createElement('div');
-                container.style.visibility = 'hidden';
-                document.body.appendChild(container);
-
-                // Temporary graph for running the layout
-                var graph = new Graph(container);
-
-                graph.getModel().beginUpdate();
-                try {
-                    cells = graph.importCells(cells);
-
-                    for (var i = 0; i < cells.length; i++) {
-                        if (graph.getModel().isVertex(cells[i])) {
-                            var size = graph.getPreferredSizeForCell(cells[i]);
-                            cells[i].geometry.width = Math.max(cells[i].geometry.width, size.width);
-                            cells[i].geometry.height = Math.max(cells[i].geometry.height, size.height);
-                        }
-                    }
-
-                    var layout = new mxCompactTreeLayout(graph);
-                    layout.edgeRouting = false;
-                    layout.horizontal = false;
-                    layout.levelDistance = 20;
-                    layout.execute(graph.getDefaultParent());
-
-                    var edgeLayout = new mxParallelEdgeLayout(graph);
-                    edgeLayout.spacing = 20;
-                    edgeLayout.execute(graph.getDefaultParent());
-                }
-                finally {
-                    graph.getModel().endUpdate();
-                }
-
-                graph.clearCellOverlays();
-
-                // Copy to actual graph
-                var inserted = [];
-
-                editorUi.editor.graph.getModel().beginUpdate();
-                try {
-                    inserted = editorUi.editor.graph.importCells(graph.getModel().getChildren(
-                        graph.getDefaultParent()), insertPoint.x, insertPoint.y)
-                    editorUi.editor.graph.fireEvent(new mxEventObject('cellsInserted', 'cells', inserted));
-                }
-                finally {
-                    editorUi.editor.graph.getModel().endUpdate();
-                }
-
-                editorUi.editor.graph.setSelectionCells(inserted);
-                editorUi.editor.graph.scrollCellToVisible(editorUi.editor.graph.getSelectionCell());
-                graph.destroy();
-                container.parentNode.removeChild(container);
-            }
+            parseCallstackToActivityDiagram(text, ui);
         };
 
         var div = document.createElement('div');
