@@ -6,6 +6,7 @@ var x0 = 0;
 export default function parseDelphiUnitToUml(text, ui) {
     var unit = parseTextToUnit(text);
     if (unit) {
+        x0 = 0;
         var classes = [];
         var graph = ui.editor.graph;
 
