@@ -12,7 +12,8 @@
 		"webpack:development": "webpack --mode development",
 		"build": "npm run webpack:production",
 		"dev": "npm run webpack:development",
-		"test": "node -r esm ./tests/delphiParserToUml.test.js"
+		"test": "node -r esm ./tests/delphiParserToUml.test.js",
+		"deploy:win": "localdeploy.bat"
 	},
 	"devDependencies": {
 		"esm": "^3.2.25",
