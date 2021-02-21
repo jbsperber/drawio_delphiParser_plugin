@@ -2,7 +2,7 @@
 	"name": "drawio-plugin-delphiparser",
 	"displayName": "Draw.io: Delphi Parser plugin",
 	"description": "Delphi Parser plugin for Draw.io",
-	"version": "0.0.0",
+	"version": "2021.02.21.10",
 	"license": "GPL-3.0",
 	"publisher": "iurifarenzena",
 	"repository": "https://github.com/iurifarenzena/drawio_delphiParser_plugin",
@@ -13,7 +13,7 @@
 		"build": "npm run webpack:production",
 		"dev": "npm run webpack:development",
 		"test": "node -r esm ./tests/delphiParserToUml.test.js",
-		"deploy:win": "localdeploy.bat"
+		"deploy:win": "npm run build && localdeploy.bat"
 	},
 	"devDependencies": {
 		"esm": "^3.2.25",

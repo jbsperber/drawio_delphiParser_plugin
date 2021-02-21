@@ -1,3 +1,4 @@
+import AboutDialog from "./aboutDialog";
 import ParseDialog from "./delphiParserDialog";
 
 /**
@@ -11,13 +12,13 @@ Draw.loadPlugin(function (ui) {
 
     // Adds action
     ui.actions.addAction('parsePascalToUMLAction', function () {
-        var dlg = new ParseDialog(ui, 'Insert from Text');
+        var dlg = new ParseDialog(ui);
         ui.showDialog(dlg.container, 680, 520, true, false);
         dlg.init();
     });
 
     ui.actions.addAction('parsePascalToUMLAbout', function () {
-        alert('dev by Iuri Farenzena\nbeta version 2021.01.21.1');
+        ui.showDialog(new AboutDialog(ui).container, 320, 200, true, true);
     });
 
     // Adds menu
