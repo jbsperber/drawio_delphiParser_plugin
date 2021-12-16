@@ -10,11 +10,16 @@ export default function parseDelphiUnitToUml(text, ui) {
         var classes = [];
         var graph = ui.editor.graph;
 
-        var unitUml = createUmlForClass(graph, 'unit ' + unit.name, null, unit.properties, unit.methods);
-        classes.push(unitUml);
+        if (unit.name.length > 0) {
+            var unitUml = createUmlForClass(graph, 'unit ' + unit.name, null, unit.properties, unit.methods);
+            classes.push(unitUml);
+        }
 
         unit.classes.forEach(c => {
-            var header = '[' + unit.name + '] ' + c.name;
+            var header = c.name;
+            if (unit.name.length > 0){
+                header = '[' + unit.name + '] ' + header;
+            }
             if (c.parentClass) {
                 header = header + ' : ' + c.parentClass;
             }

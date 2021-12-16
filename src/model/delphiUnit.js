@@ -87,12 +87,12 @@ function parseTextToUnit(text) {
                     currentClass = null;
                     currentLineUpperCase = '';
                 }
-                else if (accessChar == '-' && currentLineUpperCase.includes(':')) { // possibly a field                
-                    var fieldName = createField(currentLine);
+                else if (currentLineUpperCase.includes(':')) { // possibly a field                
+                    var newField = createField(currentLine, accessChar);
                     if (currentClass)
-                        currentClass.fields.push(fieldName);
+                        currentClass.fields.push(newField);
                     else
-                        unit.properties.push(fieldName);
+                        unit.properties.push(newField);
                 }
                 else if (currentLineUpperCase.startsWith('IMPLEMENTATION')) {
                     isImplementation = true;
@@ -145,8 +145,8 @@ function removeComments(line) {
     return line;
 }
 
-function createField(line) {
-    var fieldName = line.substring(0, line.indexOf(':')).trim();
+function createField(line,accessChar) {
+    var fieldName = accessChar + line.substring(0, line.indexOf(':')).trim();
     var fieldType = line.substring(line.indexOf(':') + 1, line.indexOf(';')).trim()
 
     if (line.includes('=')) { //cosntant declarations
