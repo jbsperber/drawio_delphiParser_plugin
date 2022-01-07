@@ -62,7 +62,13 @@ function parseTextToUnit(text) {
                     else
                         unit.properties.push(propName);
                 }
-                else if (currentLineUpperCase.startsWith('PROCEDURE') || currentLineUpperCase.startsWith('FUNCTION') || currentLineUpperCase.startsWith('CONSTRUCTOR')) {
+                else if (isMethod(currentLineUpperCase)) {
+
+                    if (currentLineUpperCase.startsWith('CLASS')){ // class procedure OR class function
+                        currentLine = currentLine.substring(5).trim(); // removes class
+                        accessChar = '*'
+                    }
+
                     var itemLine = accessChar + getItemName(currentLine);
 
                     if (itemLine.includes('(') && !itemLine.includes(')')) {
@@ -73,7 +79,7 @@ function parseTextToUnit(text) {
                         } while (!currentLine.includes(')'));
                     }
 
-                    var method = CreateNewMethod(itemLine, currentLineUpperCase.startsWith('FUNCTION'));
+                    var method = CreateNewMethod(itemLine, currentLineUpperCase.startsWith('FUNCTION') || currentLineUpperCase.startsWith('CLASSFUNCTION'));
 
                     if (currentClass) {
                         currentClass.methods.addMethod(method);
@@ -101,8 +107,14 @@ function parseTextToUnit(text) {
             }
 
             else {
-                if (currentLineUpperCase.startsWith('PROCEDURE') || currentLineUpperCase.startsWith('FUNCTION') || currentLineUpperCase.startsWith('CONSTRUCTOR')) {
+                if (isMethod(currentLineUpperCase)) {
                     reachedMethodsInImplementation = true;
+
+                    if (currentLineUpperCase.startsWith('CLASS')){ // class procedure OR class function
+                        currentLine = currentLine.substring(5).trim(); // removes class
+                        accessChar = '@'
+                    }
+
                     var itemName = accessChar + getItemName(currentLine);
                     if (!itemName.includes(".")) {
                         //multi line declaration                        
@@ -117,7 +129,7 @@ function parseTextToUnit(text) {
                                 itemName = itemName + removeComments(currentLine)
                             } while (!currentLine.includes(')'));
                         }
-                        var method = CreateNewMethod(itemName, currentLineUpperCase.startsWith('FUNCTION'));
+                        var method = CreateNewMethod(itemName, currentLineUpperCase.startsWith('FUNCTION') || currentLineUpperCase.startsWith('CLASSFUNCTION'));
                         unit.methods.addMethod(method);
                     }
                 }
@@ -131,6 +143,10 @@ function parseTextToUnit(text) {
 
         return unit;
     }
+}
+
+function isMethod(currentLineUpperCase) {
+    return currentLineUpperCase.startsWith('CLASSPROCEDURE') || currentLineUpperCase.startsWith('PROCEDURE') || currentLineUpperCase.startsWith('FUNCTION') || currentLineUpperCase.startsWith('CLASSFUNCTION') || currentLineUpperCase.startsWith('CONSTRUCTOR') || currentLineUpperCase.startsWith('DESTRUCTOR');
 }
 
 function getItemName(line) {
@@ -177,6 +193,9 @@ class LinesIterator {
                     else {
                         if ((isInsideComment || currentLine.startsWith('{')) && !currentLine.includes('}')) {
                             isInsideComment = true;
+                        }
+                        else if (isInsideComment  && currentLine.includes('}')) {
+                            isInsideComment = false;
                         }
                         return self.getNextLine(isInsideComment);
                     }

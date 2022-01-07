@@ -32,6 +32,10 @@ function CreateNewMethod(line, hasReturnType) {
         }
     }
 
+    if (method.originalLine.endsWith(';')){
+        method.originalLine = method.originalLine.substring(0,method.originalLine.length-1);
+    }
+
     return method;
 }
 

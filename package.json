@@ -2,7 +2,7 @@
 	"name": "drawio-plugin-delphiparser",
 	"displayName": "Draw.io: Delphi Parser plugin",
 	"description": "Delphi Parser plugin for Draw.io",
-	"version": "2021.12.16.11",
+	"version": "2022.1.7.12",
 	"license": "GPL-3.0",
 	"publisher": "iurifarenzena",
 	"repository": "https://github.com/iurifarenzena/drawio_delphiParser_plugin",
