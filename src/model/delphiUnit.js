@@ -32,7 +32,7 @@ function parseTextToUnit(text) {
                 if (currentLineUpperCase.startsWith('UNIT')) {
                     unit.name = currentLine.substring(currentLine.indexOf(' ') + 1, currentLine.indexOf(';'));
                 }
-                else if (currentLineUpperCase.includes('=CLASS') || currentLineUpperCase.includes('=INTERFACE(')) //found a new class
+                else if (currentLineUpperCase.includes('=CLASS') || currentLineUpperCase.includes('=INTERFACE') || currentLineUpperCase.includes('=RECORD')) //found a new class
                 {
                     var accessChar = '-';
                     //currentLine = currentLine.replace(/\s/g, '');
