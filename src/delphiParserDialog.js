@@ -23,7 +23,7 @@ export default class ParseDialog {
         textarea.style.marginBottom = '16px';
 
         function getDefaultValue() {
-            return '//Paste you Pascal class text in here\n//You can also drag and drop a file';
+            return '//Paste you Pascal text in here\n//You can also drag and drop a file';
         };
 
         var defaultValue = getDefaultValue();
