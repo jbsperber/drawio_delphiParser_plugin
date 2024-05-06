@@ -14,6 +14,7 @@ function createStackTraceElements(stackText) {
     var it = new StackLinesIterator(stackText);
     while (currentLine = it.getNextLine()) {
         var itemId = it.currentIndex;
+        currentLine = splitDotText(currentLine);        
         var target = createStackStep(itemId, currentLine);
         vertices[itemId] = target;
         cells.push(target);
@@ -29,8 +30,23 @@ function createStackTraceElements(stackText) {
     return cells;
 }
 
+function splitDotText(dotText) {
+    var splitText = dotText;
+    var firstDotPos = splitText.indexOf(".");
+    var lastDotPos = splitText.lastIndexOf(".");
+    while ((firstDotPos != lastDotPos) && (firstDotPos != -1)) {
+        splitText = splitText.substr(firstDotPos + 1);
+        firstDotPos = splitText.indexOf(".");
+        lastDotPos = splitText.lastIndexOf(".");
+    }
+    if (firstDotPos != -1) {
+        splitText = splitText.replace(".",".\n");
+    }
+    return splitText;
+}
+
 function createStackStep(id, stackLine) {
-    var vertex = new mxCell(id, new mxGeometry(0, 0, 80, 30), 'whiteSpace=wrap;html=1;');
+    var vertex = new mxCell(id, new mxGeometry(0, 0, 80, 40), 'whiteSpace=wrap;html=1;');
     vertex.id = id;
     vertex.value = stackLine;
     vertex.vertex = true;
