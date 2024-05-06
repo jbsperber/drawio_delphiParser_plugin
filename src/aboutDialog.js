@@ -14,7 +14,7 @@ export default class AboutDialog {
 
         mxUtils.para(contentDiv, '').innerHTML = 'Delphi Parser plugin for Draw.io by <b>Iuri Farenzena</b>';
         mxUtils.para(contentDiv, 'https://github.com/iurifarenzena/drawio_delphiParser_plugin').style.fontSize = 'x-small';
-        mxUtils.para(contentDiv, 'Version 2022.1.7.12').style.fontSize = 'x-small';
+        mxUtils.para(contentDiv, 'Version 2023.3.24').style.fontSize = 'x-small';
 
         div.appendChild(contentDiv);
 
